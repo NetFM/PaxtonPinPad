@@ -15,10 +15,15 @@ namespace Net2_OEM_SDK
         static void Main(string[] args)
         {
             int numID;
-            if (args.Length != 7)
+            if (args[0] != "adduser" && args[0] != "removeuser" && args[0] != "removedepartment")
             {
-                Console.WriteLine("Format:  Sample1.exe [department] [First name] [Second name] [email] [from] [until] [code]");
-                Console.WriteLine("Example: Sample1.exe visitor_05_16 Joe Bloggs joe@gmail.com  2018-05-01 2018-05-01T07:34:42-5:00 1002");
+                Console.WriteLine("Format:  PinUser.exe adduser [department] [First name] [Second name] [email] [from] [until] [code]");
+                Console.WriteLine("Example: PinUser.exe adduser visitor_05_16 Joe Bloggs joe@gmail.com  2018-05-01 2018-05-01T07:34:42-5:00 1002");
+                Console.WriteLine("Format:  PinUser.exe removeuser [email] ");
+                Console.WriteLine("Example: PinUser.exe removeuser joe@gmail.com");
+                Console.WriteLine("Format:  PinUser.exe removedepartment [department]");
+                Console.WriteLine("Note:  PinUser.exe removedepartment will remove all users in department]");
+                Console.WriteLine("Example: PinUser.exe removedepartment visitor_05_16");
                 return;
             }
 
@@ -51,7 +56,7 @@ namespace Net2_OEM_SDK
             Console.WriteLine(now.Day);
 
             //string depString = "Visitors_"+ now.Month + "_" + now.Day;
-            string depString = args[0];
+            string depString = args[1];
 
             Console.WriteLine("department = " + depString);
 
@@ -147,24 +152,24 @@ namespace Net2_OEM_SDK
             int departmentId = numID;
             bool antiPassbackInd = false;
             bool alarmUserInd = false;
-            string firstName = args[1];
+            string firstName = args[2];
             string middleName = null;
-            string surname = args[2];
+            string surname = args[3];
             string telephoneNo = null;
             string telephoneExtension = null;
-            string pinCode = args[6];
+            string pinCode = args[7];
             string pictureFileName = null;
             //DateTime activationDate = DateTime.Now;
-            DateTime activationDate = DateTime.Parse(args[4]);
+            DateTime activationDate = DateTime.Parse(args[5]);
 
             int cardNumber = 0;
             int cardTypeID = 0;
             bool active = true;
             string faxNo = null;
-            DateTime expiryDate = DateTime.Parse(args[5]);
+            DateTime expiryDate = DateTime.Parse(args[6]);
             string[] customFields = null;
 
-            Console.WriteLine("New user about to be added " + args[1] + ' ' + args[2] + ' ' + args[6]);
+            Console.WriteLine("New user about to be added " + args[2] + ' ' + args[3] + ' ' + args[7]);
 
 
             int userId = main._net2Client.AddNewUser(
@@ -180,7 +185,7 @@ namespace Net2_OEM_SDK
                 return;
             }
 
-            Console.WriteLine("New user was added " + args[1] + ' ' + args[6]);
+            Console.WriteLine("New user was added " + args[2] + ' ' + args[7]);
 
             // Get list of users in department
 
