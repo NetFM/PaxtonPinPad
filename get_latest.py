@@ -54,9 +54,13 @@ def get_latest(start, end):
         user = record['first_name'] + ' ' + record['second_name'] + ' dummy_email@company.com ' + record['start'] + ' ' + record[
 'end'] + ' ' + str(format(record['pin_code'],"04"))
         #print(format(record['pin_code'],"04"))  # To deal with zeros at front of 4 digit pins
-        cmd = 'PinUser.exe adduser' + ' ' + dep_str + ' ' + user
-        logfile.write(cmd + '\n')
-        subprocess.run(cmd)
+        cmd = 'bin\Debug\PinUser.exe adduser' + ' ' + dep_str + ' ' + user
+
+        path, fl = os.path.split(os.path.realpath(__file__))
+        full_path = os.path.join(path, cmd)
+		
+        logfile.write(full_path + '\n')
+        subprocess.run(full_path)
 
 		
 if __name__ == "__main__":
