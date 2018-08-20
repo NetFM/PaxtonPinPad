@@ -43,3 +43,6 @@ cp2.ddns.net is production machine at Vodafone dave/i*******4
 http://www.paxton.co.uk/forum/
 
 dave@netfm.org / i*****9*4
+
+
+http://www.paxton.co.uk/Forum/posts/t1240-How-to-add---delete-departmentrs-effectively
