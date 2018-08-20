@@ -37,3 +37,9 @@ AlarmUser - False
 StaffCategoryID - 0
 LastUpdated - 27/12/2017 11:11:27
 ```
+
+cp2.ddns.net is production machine at Vodafone dave/i*******4
+
+http://www.paxton.co.uk/forum/
+
+dave@netfm.org / i*****9*4
