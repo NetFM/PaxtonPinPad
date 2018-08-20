@@ -11,6 +11,7 @@ namespace Net2_OEM_SDK
         private const string REMOTE_HOST = "localhost";
         private OemClient _net2Client = new OemClient(REMOTE_HOST, REMOTE_PORT);
         //public int myDepID;
+        //dave
 
         static void Main(string[] args)
         {
@@ -41,9 +42,14 @@ namespace Net2_OEM_SDK
             if (args[0] == "adduser")
             {
                 AddUser(main, args);
-            } else if (args[0] == "removeuser")
+            }
+            else if (args[0] == "removeuser")
             {
                 RemoveUser(main, args);
+            }
+            else if (args[0] == "removedepartment")
+            {
+                RemoveDepartment(main, args);
             }
 
 
@@ -64,7 +70,7 @@ namespace Net2_OEM_SDK
             {
                 Console.Write("row..." + " ");
                 Console.Write(row["Surname"] + "   ");
-                Console.WriteLine(row["DepartmentName"]);
+                Console.Write(row["DepartmentName"]);
                 Console.WriteLine(row["UserId"]);
 
 
@@ -72,18 +78,80 @@ namespace Net2_OEM_SDK
 
                 if (row["Surname"].Equals(args[1]))
                 {
-                    String userId =  row["UserId"].ToString();
-                    Console.Write(userId);
+                    String userId = row["UserId"].ToString();
+                    Console.Write("XXXXX" + userId);
 
-                    String query2 = "DELETE from UsersEx where Surname = 'Pratt'";
+                    String query2 = "DELETE " + row["Surname"];
                     Console.WriteLine(query2);
 
-                    var dataSet2 = main._net2Client.QueryDb(query2);
-                    break;
+                    // we need to use purgeuser
+                    //int id = row["UserId"];
+                    int id = Int32.Parse(userId);
+
+
+                    bool ret = main._net2Client.PurgeUser(id);
+
+                    Console.WriteLine("ret = " + ret);
+                    //break;
                 }
 
             }
-            
+
+        }
+        private static void RemoveDepartment(Program main, string[] args)
+        {
+            // Get list of users in department
+
+            var query = "SELECT * from UsersEx"; // Colin to add where clause...
+
+            var dataSet = main._net2Client.QueryDb(query);
+
+            string depId ="";
+            int dId;
+
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                Console.Write("row..." + " ");
+                Console.Write(row["Surname"] + "   ");
+                Console.Write(row["DepartmentName"] + " " );
+                Console.WriteLine(row["UserId"]);
+
+
+
+
+                
+                if (row["DepartmentName"].Equals(args[1]))
+                {
+                    String userId = row["UserID"].ToString();
+                    depId = row["DepartmentID"].ToString();
+
+                    Console.Write("XXXXX" + userId);
+
+                    String query2 = "DELETE  " + row["DepartmentName"] + "  " + row["Surname"];
+                    Console.WriteLine(query2);
+
+                    // we need to use purgeuser
+                    //int id = row["UserId"];
+                    int id = Int32.Parse(userId);
+
+
+
+                    bool ret = main._net2Client.PurgeUser(id);
+
+                    Console.WriteLine("ret = " + ret);
+                }
+
+            }
+            // then delete department
+            if (depId != "")
+            {
+                Console.WriteLine("DELETE DEPARTMENT = " + depId);
+                dId = Int32.Parse(depId);
+                bool ret2 = main._net2Client.DeleteDepartment(dId);
+                Console.WriteLine("ret = " + ret2);
+            }
+
+
         }
 
         private static void AddUser(Program main, string[] args)
@@ -107,7 +175,7 @@ namespace Net2_OEM_SDK
             //string depString = "Visitors_"+ now.Month + "_" + now.Day;
             string depString = args[1];
 
-            Console.WriteLine("department = " + depString);
+            Console.WriteLine("MY department = " + depString);
 
             
 
